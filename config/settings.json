@@ -1,0 +1,76 @@
+{
+    "projects": {
+        "Core": {
+            "additionalDependencies": [],
+            "additionalIncludeDirectories": [],
+            "additionalLibraryDirectories": [],
+            "dependencies": [],
+            "dependents": [
+                "Engine",
+                "Render"
+            ],
+            "guid": "54B03045-11A9-0189-6474-17FE4CAE5423",
+            "lib": true,
+            "pch": true,
+            "preprocessorDefinitions": [],
+            "vcpkg": false,
+            "window": false
+        },
+        "Engine": {
+            "additionalDependencies": [],
+            "additionalIncludeDirectories": [],
+            "additionalLibraryDirectories": [],
+            "dependencies": [
+                "Core",
+                "Render"
+            ],
+            "dependents": [
+                "Game"
+            ],
+            "guid": "79D47F55-24C5-140E-6313-2C5746BE0962",
+            "lib": true,
+            "pch": true,
+            "preprocessorDefinitions": [],
+            "vcpkg": false,
+            "window": false
+        },
+        "Game": {
+            "additionalDependencies": [],
+            "additionalIncludeDirectories": [],
+            "additionalLibraryDirectories": [],
+            "dependencies": [
+                "Engine",
+                "Render"
+            ],
+            "dependents": [],
+            "guid": "3D95790C-77C5-6D6D-676F-172762BA13FE",
+            "lib": false,
+            "pch": false,
+            "preprocessorDefinitions": [],
+            "vcpkg": false,
+            "window": true
+        },
+        "Render": {
+            "additionalDependencies": [],
+            "additionalIncludeDirectories": [],
+            "additionalLibraryDirectories": [],
+            "dependencies": [
+                "Core"
+            ],
+            "dependents": [
+                "Engine",
+                "Game"
+            ],
+            "guid": "7A610CBA-5D65-5DF0-279A-3FE951891DB1",
+            "lib": true,
+            "pch": true,
+            "preprocessorDefinitions": [],
+            "vcpkg": false,
+            "window": false
+        }
+    },
+    "solution_guid": "792A780F-781D-7C31-33ED-0EB94E875BFD",
+    "solution_name": "Mithaniel",
+    "startup_project": "Game",
+    "version": "1.17.4"
+}
