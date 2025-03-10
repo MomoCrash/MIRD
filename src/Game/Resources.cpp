@@ -47,7 +47,7 @@ Resources::~Resources()
     delete MATERIAL_SKYBOX;
     delete MATERIAL_DUCK;
     delete MATERIAL_EYE;
-    delete MATERIAL_DEFAULT;
+    delete MATERIAL_BOUCEPAD;
 }
 
 void Resources::LoadCustomMesh()
@@ -95,7 +95,7 @@ void Resources::CreateParticles()
         L"PARTICLE.hlsl", L"PARTICLE.hlsl", L"CS.hlsl", "particle.cso", 8192);
 
     PARTICLE_WALL_EXPLOSION = new ParticleShader(Engine::GetRenderWindow()->GetDevice(), Engine::GetRenderWindow()->GetCommandList(),
-    L"PARTICLE.hlsl", L"PARTICLE.hlsl", L"CS.hlsl", "particle1.cso", 33554432);
+    L"PARTICLE.hlsl", L"PARTICLE.hlsl", L"CS.hlsl", "particle1.cso", 256);
 }
 
 void Resources::CreateTextures()
