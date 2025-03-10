@@ -4,15 +4,16 @@
 SpatialGrid::SpatialGrid(float cellSize, int minGridSizeX, int minGridSizeY, int minGridSizeZ, int maxGridSizeX, int maxGridSizeY, int maxGridSizeZ)
     : mCellSize(cellSize), mMinX(minGridSizeX), mMinY(minGridSizeY), mMinZ(minGridSizeZ),
       mMaxX(maxGridSizeX), mMaxY(maxGridSizeY), mMaxZ(maxGridSizeZ),
-      mGridSizeX(maxGridSizeX - minGridSizeX), mGridSizeY(maxGridSizeY - minGridSizeY), mGridSizeZ(maxGridSizeZ - minGridSizeZ) {
+      mGridSizeX(maxGridSizeX - minGridSizeX), mGridSizeY(maxGridSizeY - minGridSizeY), mGridSizeZ(maxGridSizeZ - minGridSizeZ)
+{
 }
 
 SpatialGrid::~SpatialGrid()
 {
     for (auto& [coords, entities] : mCells)
-        {
+    {
         for (Entity* entity : entities)
-            {
+        {
             delete entity; 
         }
         entities.clear();
@@ -33,7 +34,7 @@ void SpatialGrid::UpdateEntity(Entity* entity)
     auto oldCoords = collider->GetLastGridPosition();
 
     if (oldCoords != newCoords)
-        {
+    {
         auto& oldCell = mCells[oldCoords];
         oldCell.erase(std::remove(oldCell.begin(), oldCell.end(), entity), oldCell.end());
 
@@ -48,19 +49,20 @@ void SpatialGrid::UpdateEntity(Entity* entity)
     }
 }
 
-bool SpatialGrid::IsValidCell(const CellCoords& coords) const {
+bool SpatialGrid::IsValidCell(const CellCoords& coords) const
+{
     return coords.x >= mMinX && coords.x < mMaxX &&
            coords.y >= mMinY && coords.y < mMaxY &&
            coords.z >= mMinZ && coords.z < mMaxZ;
 }
 
-CellCoords SpatialGrid::GetCellCoords(float x, float y, float z) const {
-    return
-    {
+CellCoords SpatialGrid::GetCellCoords(float x, float y, float z) const
+{
+    return{
         static_cast<int>(x / mCellSize),
         static_cast<int>(y / mCellSize),
         static_cast<int>(z / mCellSize)
-    };
+            };
 }
 
 void SpatialGrid::GetNeighboringEntities(int cellX, int cellY, int cellZ, std::vector<Entity*>& outEntities)
@@ -78,7 +80,7 @@ void SpatialGrid::GetNeighboringEntities(int cellX, int cellY, int cellZ, std::v
                     {
                     auto it = mCells.find(coords);
                     if (it != mCells.end())
-                        {
+                    {
                         outEntities.insert(outEntities.end(), it->second.begin(), it->second.end());
                     }
                 }

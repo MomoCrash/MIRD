@@ -11,7 +11,8 @@ MeshRenderer::MeshRenderer(Entity* parent, Mesh* mesh, Material* material) : Com
     ObjConstantBuffer =  new UploadBuffer<ObjectConstants>(render->GetDevice(), 1, true);
     ObjConstantBuffer->Resource()->SetName(L"MESH_RENDERER");
 
-    if (material == nullptr) ObjMaterial = Engine::GetRenderWindow()->GetDefaultMaterial();
+    if (material == nullptr)
+        ObjMaterial = Engine::GetRenderWindow()->GetDefaultMaterial();
     else if (material->CreateMaterial(render) == false)
     {
         Debug::Error("Failed to create material setting default");

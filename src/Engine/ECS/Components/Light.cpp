@@ -6,7 +6,6 @@ Light::Light(Entity* entity, FXMVECTOR color, float strength) : Component(entity
     XMStoreFloat3(&Color, color);
 }
 
-
 int Light::GetBitmask()
 {
     return BITMASK;

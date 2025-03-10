@@ -6,18 +6,21 @@
 struct CellCoords {
     int x, y, z;
 
-    bool operator==(const CellCoords& other) const {
+    bool operator==(const CellCoords& other) const
+    {
         return x == other.x && y == other.y && z == other.z;
     }
 };
 
 struct CellHash {
-    std::size_t operator()(const CellCoords& key) const {
+    std::size_t operator()(const CellCoords& key) const
+    {
         return std::hash<int>()(key.x) ^ std::hash<int>()(key.y) ^ std::hash<int>()(key.z);
     }
 };
 
-class SpatialGrid {
+class SpatialGrid
+{
 public:
     SpatialGrid(float cellSize, int minGridSizeX, int minGridSizeY, int minGridSizeZ, int maxGridSizeX, int maxGridSizeY, int maxGridSizeZ);
     ~SpatialGrid();
@@ -34,16 +37,16 @@ public:
 
     std::unordered_map<CellCoords, std::vector<Entity*>, CellHash> GetAllCells() { return mCells; }
 
-    // Récupère la taille de la grille
+    // Get All Grid Info
     int GetGridSizeX() const { return mGridSizeX; }
     int GetGridSizeY() const { return mGridSizeY; }
     int GetGridSizeZ() const { return mGridSizeZ; }
     float GetCellSize() const { return mCellSize; }
 
 private:
-    float mCellSize; // Taille d'une cellule
-    int mMinX, mMinY, mMinZ; // min de la grille
-    int mMaxX, mMaxY, mMaxZ; // max de la grille
-    int mGridSizeX, mGridSizeY, mGridSizeZ; // Taille de la grille en cell
+    float mCellSize; // Size of a Cell
+    int mMinX, mMinY, mMinZ; // Bottom-Left-Backward corner
+    int mMaxX, mMaxY, mMaxZ; // Top-Right-Forward Corner
+    int mGridSizeX, mGridSizeY, mGridSizeZ; // GridSize in Cell
     std::unordered_map<CellCoords, std::vector<Entity*>, CellHash> mCells; 
 };

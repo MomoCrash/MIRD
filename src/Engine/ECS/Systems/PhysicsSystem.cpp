@@ -10,9 +10,6 @@
 
 void PhysicsSystem::OnFixedUpdate(ECS* globalEC)
 {
-    Profiler physic;
-
-    physic.NewTask("PhysicsSystem.OnFixedUpdate");
     for (int i = 0; i < globalEC->mEntityCount; i++)
     {
         if (!globalEC->HasComponent<RigidBody3D>(i)) continue;
@@ -36,6 +33,7 @@ void PhysicsSystem::OnFixedUpdate(ECS* globalEC)
         DirectX::XMVECTOR velocity = DirectX::XMLoadFloat3(&rb->mVelocity);
         velocity = DirectX::XMVectorAdd(velocity, DirectX::XMVectorScale(acceleration, deltaTime));
 
+        //Damping factor (Akin to Air Resistance IRL)
         velocity = DirectX::XMVectorScale(velocity, 1.0f - rb->mDamping * deltaTime);
         DirectX::XMStoreFloat3(&rb->mVelocity, velocity);
 
@@ -45,7 +43,6 @@ void PhysicsSystem::OnFixedUpdate(ECS* globalEC)
         rb->GetEntity()->GetTransform()->SetPosition(newPosition);
         rb->ClearForces();
     }
-    physic.EndTask();
 }
 
 

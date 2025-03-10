@@ -39,7 +39,8 @@ CollisionManifold Collider3D::CheckCollisionSphereSphere(Collider3D* Collider)
     float dist = XMVectorGetX(XMVector3Length(diff));
     float radii = collider1->GetRadius() + collider2->GetRadius();
     
-    if (dist <= (radii * radii)) {
+    if (dist <= (radii * radii))
+        {
         manifold.hasCollision = true;
         
         XMStoreFloat3(&manifold.normal, XMVector3Normalize(diff));
@@ -65,10 +66,13 @@ CollisionManifold Collider3D::CheckCollisionSphereBox(Collider3D* Collider)
     SphereCollider* sphere;
     BoxCollider* box;
 
-    if (Collider->GetColliderType() == ColliderType::Sphere) {
+    if (Collider->GetColliderType() == ColliderType::Sphere)
+    {
         sphere = static_cast<SphereCollider*>(Collider);
         box = static_cast<BoxCollider*>(this);
-    } else {
+    }
+    else
+    {
         sphere = static_cast<SphereCollider*>(this);
         box = static_cast<BoxCollider*>(Collider);
     }

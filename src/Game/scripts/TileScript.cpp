@@ -49,7 +49,7 @@ void TileScript::OnStart()
         enemyEye->GetTransform()->SetPosition(owner->GetTransform()->position.x + resultPosX, owner->GetTransform()->position.y + 10.0f, owner->GetTransform()->position.z + resultPosZ);
         enemyEye->GetTransform()->SetScale({ 1.5f, 1.5f, 1.5f });
         ObjectFactory::CreateComponent<MeshRenderer>(enemyEye, Resources::instance().MESH_EYE, resources->MATERIAL_EYE);
-        ObjectFactory::CreateComponent<SphereCollider>(enemyEye, 1.0f, false, true);
+        ObjectFactory::CreateComponent<SphereCollider>(enemyEye, 2.0f, false, true);
         enemyEye->SetTag(Entity::Tag::ENNEMY);
         ObjectFactory::AttachScript<EnemyAction>(enemyEye);
 

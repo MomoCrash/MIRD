@@ -8,7 +8,7 @@
 #include "scripts/ScriptManager.h"
 #include "Utils/Profiler.h"
 
-int MAX_ITERATIONS = 5;
+int MAX_ITERATIONS = 10;
 float PENETRATION_SLACK = 0.25f;
 
 CollisionSystem::CollisionSystem()  
@@ -51,19 +51,19 @@ void CollisionSystem::DetectCollisions(ECS* globalEC)
     for (auto& [coords, entitiesInCell] : allCells)
     {
         
-        mGrid->GetNeighboringEntities(coords.x, coords.y, coords.z, neighboringEntities);
+        mGrid->GetNeighboringEntities(coords.x, coords.y, coords.z, mNeighboringEntities);
         
         for (Entity* entity1 : entitiesInCell)
         {
-            if (removed.contains(entity1)) continue;
+            if (mRemovedEntities.contains(entity1)) continue;
             if(!entity1 || entity1->IsDestroyed()) continue;
             
             Collider3D* collider1 = globalEC->GetComponent<Collider3D>(*entity1->GetIndex());
             if (!collider1 || !collider1->GetState()) continue;
             
-            for (Entity* entity2 : neighboringEntities)
+            for (Entity* entity2 : mNeighboringEntities)
             {
-                if (removed.contains(entity2)) continue;
+                if (mRemovedEntities.contains(entity2)) continue;
                 if (entity2->GetTag() == entity1->GetTag() || entity2->IsDestroyed()) continue;
                 
                 Collider3D* collider2 = globalEC->GetComponent<Collider3D>(*entity2->GetIndex());
@@ -91,7 +91,8 @@ void CollisionSystem::ProcessCollision(Collider3D* collider1, Collider3D* collid
 }
 
 //TODO More Opti
-void CollisionSystem::UpdateColliders(ECS* globalEC) {
+void CollisionSystem::UpdateColliders(ECS* globalEC)
+{
     for (int i = 0; i < globalEC->mEntityCount; i++)
     {
         if (!globalEC->HasComponent<Collider3D>(i)) continue;
@@ -132,7 +133,7 @@ void CollisionSystem::ResolvePositions()
         
         if (rb1 && !collider1->IsStatic())
         {
-             float ratio1 = rb1->GetInvMass() / totalInvMass;
+            float ratio1 = rb1->GetInvMass() / totalInvMass;
             XMVECTOR pos = XMLoadFloat3(&entity1->GetTransform()->position);
             XMVECTOR correction = XMVectorScale(collisionNormal, correctionAmount * ratio1 * mFixedTimestep);
             pos = XMVectorAdd(pos, correction);
@@ -210,7 +211,8 @@ void CollisionSystem::ResolveVelocities()
     }
 }
 
-void CollisionSystem::UpdateManifolds(ECS* globalEC) {
+void CollisionSystem::UpdateManifolds()
+{
     std::vector<CollisionManifold> updatedManifolds;
 
     for (const auto& manifold : mManifoldList)
@@ -237,9 +239,6 @@ void CollisionSystem::OnFixedUpdate(ECS* globalEC)
 {
     mManifoldList.clear();
     mCurrentCollisions.clear();
-    Profiler collisionaProfiler;
-    
-    collisionaProfiler.NewTask("OnFixedUpdate");
     
     UpdateColliders(globalEC);
     
@@ -268,7 +267,7 @@ void CollisionSystem::OnFixedUpdate(ECS* globalEC)
 
             if (iteration < MAX_ITERATIONS - 1)
             {
-                UpdateManifolds(globalEC);
+                UpdateManifolds();
             }
         }
         
@@ -281,11 +280,10 @@ void CollisionSystem::OnFixedUpdate(ECS* globalEC)
     }
     
     HandleOnEvents();
-    collisionaProfiler.EndTask();
 
     mPreviousCollisions = mCurrentCollisions;
 
-    for(Entity* entityRemoved : removed)
+    for(Entity* entityRemoved : mRemovedEntities)
     {
         for (auto& [coords, entitiesInCell] : mGrid->GetAllCells())
         {
@@ -301,7 +299,7 @@ void CollisionSystem::OnFixedUpdate(ECS* globalEC)
             }
         }
     }
-    removed.clear();
+    mRemovedEntities.clear();
 
 }
 
@@ -355,5 +353,5 @@ void CollisionSystem::HandleOnEvents()
 
 void CollisionSystem::RemoveEntity(Entity* entity)
 {
-    removed.emplace(entity);
+    mRemovedEntities.emplace(entity);
 }

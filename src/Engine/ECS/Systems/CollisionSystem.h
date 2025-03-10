@@ -8,11 +8,13 @@
 
 class ECS;
 
-struct CollisionPair {
+struct CollisionPair
+{
     Collider3D* col1;
     Collider3D* col2;
 
-    CollisionPair(Collider3D* c1, Collider3D* c2) {
+    CollisionPair(Collider3D* c1, Collider3D* c2)
+    {
         if (c1 < c2) { 
             col1 = c1; 
             col2 = c2; 
@@ -22,12 +24,13 @@ struct CollisionPair {
         }
     }
 
-    bool operator==(const CollisionPair& other) const {
+    bool operator==(const CollisionPair& other) const
+    {
         return col1 == other.col1 && col2 == other.col2;
     }
 };
 
-//Clé pour la unordered list, crée une clé unique pour la paire qu'importe l'ordre
+
 struct CollisionPairHash {
     std::size_t operator()(const CollisionPair& pair) const {
         return std::hash<Collider3D*>()(pair.col1) ^ std::hash<Collider3D*>()(pair.col2);
@@ -37,6 +40,7 @@ struct CollisionPairHash {
 class CollisionSystem
 {
     float mFixedTimestep = 1.0f / 60.0f;
+    
 public:
     CollisionSystem();
     static CollisionSystem& Get();
@@ -48,10 +52,8 @@ public:
     void ResolvePositions();
     void ResolveVelocities();
     bool HasManifold(Collider3D* col1, Collider3D* col2);
-    void UpdateManifolds(ECS* globalEC);
+    void UpdateManifolds();
     void RemoveEntity(Entity* entity);
-    
-
 
 private:
     std::vector<CollisionManifold> mManifoldList = {};
@@ -59,7 +61,7 @@ private:
     std::unordered_set<CollisionPair, CollisionPairHash> mCurrentCollisions = {};
     
     SpatialGrid* mGrid;
-    std::vector<Entity*> neighboringEntities;
+    std::vector<Entity*> mNeighboringEntities;
     
-    std::set<Entity*> removed;
+    std::set<Entity*> mRemovedEntities;
 };
