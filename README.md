@@ -5,10 +5,10 @@
 
 # About 
 
-MIRD is a 3D engine written in C++ using DirectX, structured into two main modules.
+MIRD is a 3D engine written in C++ using DirectX, structured into two main modules :
 
-Rendering module: Manage PSOs, shaders, and compute shaders (for particles) and other "basics" DirectX12 initialisations.
-Engine module: Built on an ECS (Entity Component System) with advanced scripting management inspired by Unity.
+- Rendering module: Manage PSOs, shaders, and compute shaders (for particles) and other "basics" DirectX12 initialisations.
+- Engine module: Built on an ECS (Entity Component System) with advanced scripting management inspired by Unity.
 
 ### Key aspects
 - The 3D rendered part is not restricted to our engine it is easily usable. It's made to be used in anyone's engine.
