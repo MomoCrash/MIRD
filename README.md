@@ -1,13 +1,32 @@
-# ReBreaker
+# MIRD : Moteur Incroyable de Rendu DirectX12
 
-> Directly download the [lasted release](https://github.com/MomoCrash/MIRD/releases/), unzip, and enjoy the game ! \
+> Directly download the [lasted release](https://github.com/MomoCrash/MIRD/releases/), unzip, and test the engine or just read the code ! \
 > Or you can download the repository to read code.
 
 # About 
 
-A fresh take on the timeless brick breaker, more dynamic and juicier than ever.
+MIRD is a 3D engine written in C++ using DirectX, structured into two main modules.
 
-ReBreaker takes the classic brick breaker formula and pushes it to the extreme. With a retro aesthetic, the game challenges you to beat your high score across a variety of levels. Grow the ball or the paddle, unleash lightning, or even slow down time in this upgraded version designed to be as satisfying as possible. ReBreaker focuses on impactful feedback and "juiciness," making every brick you destroy a pure shot of dopamine.
+Rendering module: Manage PSOs, shaders, and compute shaders (for particles) and other "basics" DirectX12 initialisations.
+Engine module: Built on an ECS (Entity Component System) with advanced scripting management inspired by Unity.
+
+### Key aspects
+- The 3D rendered part is not restricted to our engine it is easily usable. It's made to be used in anyone's engine.
+- Easy creation of entity and component attachment for fast and easy usage.
+
+```cpp
+// entity creation
+Entity* player = ObjectFactory::CreateEntity<Entity>();
+player->GetTransform()->SetPosition(0.0f, 150.0f, 0.0f);
+// Add your components
+ObjectFactory::CreateComponent<RigidBody3D>(player);
+ObjectFactory::CreateComponent<BoxCollider>(player, -1.0f, -5.0f, -1.0f, 1.0f, 5.0f, 1.0f, false, false);
+// (Optional) Define a TAG
+player->SetTag(Entity::Tag::PLAYER);
+// Attach scripts
+ObjectFactory::AttachScript<PlayerMovement>(player);
+ObjectFactory::AttachScript<PlayerShoot>(player);
+```
 
 # Build the solution 
 1. Clone the repository
